@@ -29,8 +29,10 @@ class _LoginState extends State<Login> {
           resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
           body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const SizedBox(
+                height: 250,
+              ),
               const Text(
                 "Enter Phone Number:",
                 style: TextStyle(

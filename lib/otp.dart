@@ -32,6 +32,9 @@ class _OTPState extends State<OTP> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(
+              height: 260,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -82,7 +85,7 @@ class _OTPState extends State<OTP> {
                   }
               },
             ),
-            Spacer(),
+            const Spacer(),
             Container(
               alignment: Alignment.bottomCenter,
               child: Image.asset(
