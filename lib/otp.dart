@@ -5,8 +5,6 @@ import 'package:pinput/pinput.dart';
 
 class OTP extends StatefulWidget {
   final String _mobile;
-
-
   OTP(this._mobile, {super.key});
 
   @override
@@ -79,15 +77,17 @@ class _OTPState extends State<OTP> {
                   if(val == _otp){
                     print(true);
                   }
-                  else print(false);
+                  else {
+                    print(false);
+                  }
               },
             ),
-            SizedBox(
-              height: 100,
-              child: FittedBox(
-                fit: BoxFit.fill,
-                child: Image.asset("assets/images/moon2.png"),
-                alignment: Alignment.bottomCenter,
+            Spacer(),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: Image.asset(
+                "assets/images/moon.png",
+                fit: BoxFit.cover,
               ),
             )
           ],

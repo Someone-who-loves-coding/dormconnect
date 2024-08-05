@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'otp.dart';
-import 'package:image/image.dart' as img;
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -12,7 +12,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   late String _mobile;
-  late String _ccode;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +29,8 @@ class _LoginState extends State<Login> {
           resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
           body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 258),
               const Text(
                 "Enter Phone Number:",
                 style: TextStyle(
@@ -56,14 +56,24 @@ class _LoginState extends State<Login> {
                     _mobile = val;
                   });
                 },
-                onCompleted: (val) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => OTP(_mobile)));
+                onCompleted: (val) async {
+                  await FirebaseAuth.instance.verifyPhoneNumber(
+                    phoneNumber: '+91$_mobile',
+                    verificationCompleted: (PhoneAuthCredential credential) async {
+                      await auth.signInWithCredential(credential);
+                    },
+                    verificationFailed: (FirebaseAuthException e) {},
+                    codeSent: (String verificationId, int? resendToken) {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => OTP(_mobile)));
+                      },
+                    codeAutoRetrievalTimeout: (String verificationId) {},
+                  );
                 },
               ),
-              const Spacer(),
+              Spacer(),
               Image.asset(
                 "assets/images/moon.png",
-                fit: BoxFit.cover, // Adjust the fit as needed
+                fit: BoxFit.cover,
               )
             ],
           ),
