@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:flutter/painting.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
@@ -16,6 +16,11 @@ class OTP extends StatefulWidget {
 class _OTPState extends State<OTP> {
   @override
   Widget build(BuildContext context) {
+    const assetImage = AssetImage('assets/images/moon2.png');
+    final resizeImage = ResizeImage(
+      assetImage,
+      width: MediaQuery.of(context).size.width.toInt(),
+    );
     late String _otp;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -32,7 +37,7 @@ class _OTPState extends State<OTP> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Padding(padding: EdgeInsets.only(left: 40)),
+                const Padding(padding: EdgeInsets.only(left: 40)),
                 Text(
                   "OTP sent to \n ${widget._mobile}",
                   style: const TextStyle(
@@ -77,10 +82,13 @@ class _OTPState extends State<OTP> {
                   else print(false);
               },
             ),
-            const Spacer(),
-            Image.asset(
-              "assets/images/moon.png",
-              fit: BoxFit.cover, // Adjust the fit as needed
+            SizedBox(
+              height: 100,
+              child: FittedBox(
+                fit: BoxFit.fill,
+                child: Image.asset("assets/images/moon2.png"),
+                alignment: Alignment.bottomCenter,
+              ),
             )
           ],
         ),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "173377252490",
+    "project_id": "dormconnect-project",
+    "storage_bucket": "dormconnect-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173377252490:android:0ab5029b6fce11b8f45173",
+        "android_client_info": {
+          "package_name": "com.vivere.dormconnect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAA033w-RxTJ4bMnLqpofIV6azO4ty9AEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
