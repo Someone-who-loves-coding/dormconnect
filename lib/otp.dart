@@ -1,25 +1,30 @@
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
+import 'home.dart';
+
 class OTP extends StatefulWidget {
+  // final String _mobile;
+  // OTP(this._mobile, {super.key});
+
   final String _mobile;
-  OTP(this._mobile, {super.key});
+  final String _verificationId;
+
+  OTP(this._mobile, this._verificationId, {super.key});
 
   @override
   State<OTP> createState() => _OTPState();
 }
 
 class _OTPState extends State<OTP> {
+  bool _showError = false;
   @override
   Widget build(BuildContext context) {
     const assetImage = AssetImage('assets/images/moon2.png');
-    final resizeImage = ResizeImage(
-      assetImage,
-      width: MediaQuery.of(context).size.width.toInt(),
-    );
-    late String _otp;
+    FirebaseAuth auth = FirebaseAuth.instance;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -71,19 +76,36 @@ class _OTPState extends State<OTP> {
             ),
             Pinput(
               length: 6,
-              onChanged: (val) {
-                setState(() {
-                  _otp = val;
-                });
-              },
-              onCompleted: (val) {
-                  if(val == _otp){
-                    print(true);
+              onCompleted: (val) async {
+                try {
+                PhoneAuthCredential credential = PhoneAuthProvider.credential(
+                verificationId: widget._verificationId, smsCode: val);
+                await auth.signInWithCredential(credential).then(
+                      (value) => Navigator.push(context, MaterialPageRoute(builder: (context) => const Home(),),));
+                // await auth.signInWithCredential(credential).then(value) => {
+                //   print('Logged In Successfully'),
+                // };
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == 'invalid-verification-code') {
+                    setState(() {
+                      _showError = true; // Show the error message
+                    });
                   }
                   else {
-                    print(false);
+                    Text(e.message != null ? e.message! : 'An error occurred');
                   }
-              },
+                }
+              }
+            ),
+            Visibility(
+              visible: _showError, // Control visibility based on state
+              child: const Padding(
+                padding: EdgeInsets.only(top: 8.0), // Add some spacing
+                child: Text(
+                  "Incorrect verification Code. Try again",
+                  style: TextStyle(color: Colors.red), // Customize style if needed
+                ),
+              ),
             ),
             const Spacer(),
             Container(

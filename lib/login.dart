@@ -62,17 +62,22 @@ class _LoginState extends State<Login> {
                   await FirebaseAuth.instance.verifyPhoneNumber(
                     phoneNumber: '+91$_mobile',
                     verificationCompleted: (PhoneAuthCredential credential) async {
-                      await auth.signInWithCredential(credential);
+                      await auth.signInWithCredential(credential).then(
+                            (value) => print('Logged In Successfully'),
+                      );
                     },
-                    verificationFailed: (FirebaseAuthException e) {},
+                    verificationFailed: (FirebaseAuthException e) {
+                      print(e.message);
+                    },
                     codeSent: (String verificationId, int? resendToken) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => OTP(_mobile)));
+                      Navigator.push(context, MaterialPageRoute( builder: (context) => OTP(_mobile, verificationId),),);
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => OTP(_mobile)));
                       },
                     codeAutoRetrievalTimeout: (String verificationId) {},
                   );
                 },
               ),
-              Spacer(),
+              const Spacer(),
               Image.asset(
                 "assets/images/moon.png",
                 fit: BoxFit.cover,
